@@ -5,11 +5,10 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
-
-const recordAudio = () => {
+const recordAudio = () =>
   new Promise(async resolve => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const mediaRecorder = new mediaRecorder(stream);
+    const mediaRecorder = new MediaRecorder(stream);
     let audioChunks = [];
 
     mediaRecorder.addEventListener("dataavailable", event => {
@@ -21,7 +20,7 @@ const recordAudio = () => {
       mediaRecorder.start();
     };
 
-    const stop = () => {
+    const stop = () =>
       new Promise(resolve => {
         mediaRecorder.addEventListener("stop", () => {
           const audioBlob = new Blob(audioChunks);
@@ -33,44 +32,42 @@ const recordAudio = () => {
 
         mediaRecorder.stop();
       });
-    };
 
     resolve({ start, stop });
-  });  
-};
-
+  });
 
 const sleep = time => new Promise(resolve => setTimeout(resolve, time));
-  const recordButton = document.querySelector("#record");
-  const stopButton = document.querySelector("#stop");
-  const playButton = document.querySelector("#play");
-  const saveButton = document.querySelector("#save");
-  const savedAudioMessagesContainer = document.querySelector(
-    "#saved-audio-messages"
-  );
 
-  let recorder;
-  let audio;
+const recordButton = document.querySelector("#record");
+const stopButton = document.querySelector("#stop");
+const playButton = document.querySelector("#play");
+const saveButton = document.querySelector("#save");
+const savedAudioMessagesContainer = document.querySelector(
+  "#saved-audio-messages"
+);
 
-  recordButton.addEventListener("click", async () => {
-    recordButton.setAttribute("disabled", true);
-    stopButton.removeAttribute("disabled");
-    playButton.setAttribute("disabled", true);
-    saveButton.setAttribute("disabled", true);
-    if (!recorder) {
-      recorder = await recordAudio();
-    }
-    recorder.start();
-  });
+let recorder;
+let audio;
 
-  stopButton.addEventListener("click", async () => {
-    recordButton.removeAttribute("disabled");
-    stopButton.setAttribute("disabled", true);
-    playButton.removeAttribute("disabled");
-    saveButton.removeAttribute("disabled");
-    audio = await recorder.stop();
-  });
+recordButton.addEventListener("click", async () => {
+  recordButton.setAttribute("disabled", true);
+  stopButton.removeAttribute("disabled");
+  playButton.setAttribute("disabled", true);
+  saveButton.setAttribute("disabled", true);
+  if (!recorder) {
+    recorder = await recordAudio();
+  }
+  recorder.start();
+});
 
-  playButton.addEventListener("click", () => {
-    audio.play();
-  });
+stopButton.addEventListener("click", async () => {
+  recordButton.removeAttribute("disabled");
+  stopButton.setAttribute("disabled", true);
+  playButton.removeAttribute("disabled");
+  saveButton.removeAttribute("disabled");
+  audio = await recorder.stop();
+});
+
+playButton.addEventListener("click", () => {
+  audio.play();
+});
