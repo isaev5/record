@@ -36,9 +36,11 @@ const recordAudio = () => {
     };
 
     resolve({ start, stop });
-  });
+  });  
+};
 
-  const sleep = time => new Promise(resolve => setTimeout(resolve, time));
+
+const sleep = time => new Promise(resolve => setTimeout(resolve, time));
   const recordButton = document.querySelector("#record");
   const stopButton = document.querySelector("#stop");
   const playButton = document.querySelector("#play");
@@ -72,4 +74,3 @@ const recordAudio = () => {
   playButton.addEventListener("click", () => {
     audio.play();
   });
-};
