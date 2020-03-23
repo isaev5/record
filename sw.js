@@ -1,6 +1,6 @@
 const CACHE_NAME = 'site_cache_v1';
 let urlsToCache = [
-    '/'
+    './css/app.css'
 ];
 
 self.addEventListener('install', (event) => {
