@@ -1,8 +1,8 @@
 const CACHE_NAME = 'site_cache_v1';
-let urlsToCache = {
+let urlsToCache = [
     '/',
     'css/app.css'
-};
+];
 
 self.addEventListener('install', (event) => {
     event.waitUntill(
@@ -12,4 +12,9 @@ self.addEventListener('install', (event) => {
                 return cache.addAll(urlsToCache);
             })
     );
+})
+
+
+self.addEventListener('fetch', event => {
+    console.log('fetch request', event.request);
 })
