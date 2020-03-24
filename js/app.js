@@ -12,6 +12,7 @@ const recordAudio = () =>
     let audioChunks = [];
 
     mediaRecorder.addEventListener("dataavailable", event => {
+      console.log(event.data);
       audioChunks.push(event.data);
     });
 
@@ -26,6 +27,9 @@ const recordAudio = () =>
           const audioBlob = new Blob(audioChunks);
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
+          // audio.controls = true;
+          // document.body.append(audio)
+          // console.log(audio);
           const play = () => audio.play();
           resolve({ audioChunks, audioBlob, audioUrl, play });
         });
@@ -70,4 +74,20 @@ stopButton.addEventListener("click", async () => {
 
 playButton.addEventListener("click", () => {
   audio.play();
+});
+
+
+const input = document.querySelector('input[type="file"]');
+
+input.addEventListener('change', e => {
+  console.log(input.file);
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image;
+    img.src = reader.result;
+    document.body.appendChild(img);
+    console.log(reader);
+  }
+
+  reader.readAsDataURL(input.files[0]);
 });
